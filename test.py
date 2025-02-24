@@ -264,14 +264,12 @@ class TestComputerVsComputer(unittest.TestCase):
 						# Swap symbols back to original.
 						game.computer_symbol, game.human_symbol = game.human_symbol, game.computer_symbol
 
-		def simulate_game(self, depth=4):
+		def simulate_game(self, depth1=4, depth2=4):
 				'''
-				Simulate a full game between two computer players.
+				Simulate a full game between two computer players with different search depths.
 
-				The game continues until a win or draw is detected.
-				Returns the outcome as 'AI #1 wins', 'AI #2 wins', or 'draw'.
-
-				@param depth: Search depth for the alpha-beta algorithm.
+				@param depth1: Search depth for AI #1.
+				@param depth2: Search depth for AI #2.
 				@return: String representing the outcome.
 				'''
 				board_size = 5
@@ -283,16 +281,18 @@ class TestComputerVsComputer(unittest.TestCase):
 						# Check if the game has reached a terminal state.
 						if game.checkWin(game.computer_symbol) or game.checkWin(game.human_symbol) or game.checkDraw():
 								break
-						# Simulate move for the current player.
-						self.simulate_computer_move(game, current_player, depth)
+						# Simulate move for the current player with different depths.
+						if current_player == 1:
+								self.simulate_computer_move(game, current_player, depth1)
+						else:
+								self.simulate_computer_move(game, current_player, depth2)
 						# Switch players: if current_player was 1, then 2; otherwise 1.
 						current_player = 2 if current_player == 1 else 1
 
-				# Determine the outcome.
 				if game.checkWin('O'):
-						return 'first'
+						return 'AI #1 WINS'
 				elif game.checkWin('X'):
-						return 'second'
+						return 'AI #2 WINS'
 				else:
 						return 'draw'
 
@@ -305,7 +305,8 @@ class TestComputerVsComputer(unittest.TestCase):
 				num_games = 10  # Number of games to simulate.
 				outcomes = {'AI #1 WINS': 0, 'AI #2 WINS': 0, 'draw': 0}
 				for _ in range(num_games):
-						result = self.simulate_game(depth=4)
+						# For instance, AI #1 uses depth 4, and AI #2 uses depth 2.
+						result = self.simulate_game(depth1=2, depth2=1)
 						outcomes[result] += 1
 				# Print the outcomes for analysis.
 				print('Outcomes after {} games: {}'.format(num_games, outcomes))
