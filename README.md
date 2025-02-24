@@ -12,7 +12,7 @@ This is a Python implementation of the Connect M game using adversarial search w
 - `main.py`: Contains the command-line interface (CLI) for the game.
 - `README.md`: This file.
 - `REPORT.md`: Contains the project report outlining the design and implementation details.
-- `test.py`: Comprehensive test suite for game logic and CLI functionality.
+- `test.py`: Comprehensive test suite for game logic and CLI functionality. It also includes simulations of computer-vs.-computer games to analyze outcomes.
 
 ## How to Run
 
@@ -41,9 +41,20 @@ python3 main.py 5 4 1
 - **Connect M (M):** Determines how many disks in a row (horizontally, vertically, or diagonally) are required to win. Increasing M makes it harder to achieve a win.
 - **First Move Flag (H):** Sets who starts the game. `1` means the human moves first; `0` means the computer starts.
 - **Search Depth:** Currently, the search depth for the alpha-beta pruning is hardcoded in `main.py` as 4. Adjusting the depth can trade off between computation time and the quality of the computer’s move:
-	- A higher depth may result in a stronger computer opponent but will slow down move selection.
-	- A lower depth speeds up the game but may lead to suboptimal moves.
+    - A higher depth may result in a stronger computer opponent but will slow down move selection.
+    - A lower depth speeds up the game but may lead to suboptimal moves.
+
+## Testing
+
+The project includes a comprehensive test suite in `test.py` that covers:
+- **Game Logic Tests:** Validates move validation, win/draw detection, heuristic evaluation, and alpha-beta search.
+- **CLI Tests:** Simulates command-line invocations to ensure proper error handling for invalid inputs.
+- **Computer-vs.-Computer Simulations:** Runs multiple simulated games where the computer plays against itself. This helps analyze whether the game always ends in a draw, or if a win can be forced under certain circumstances.
+
+To run the tests, execute:
 
 ```
-Enjoy the game!
+python3 test.py
 ```
+
+Enjoy the game!
