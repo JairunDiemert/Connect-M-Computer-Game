@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
 '''
 /**
- * Comprehensive Test Suite for Connect M Game.
+ * Test Suite for Connect M Game.
  *
- * This module contains unit tests for the Connect M game implementation.
- * It covers both the game logic in the ConnectMGame class as well as the CLI
- * functionality in the main module via subprocess calls.
+ * This module contains unit tests for both the game logic in the ConnectMGame class
+ * and the CLI functionality in main.py.
  *
  * @author Jairun Diemert
  * @date 2025-02-24
@@ -13,41 +12,50 @@
  */
 '''
 
-import unittest
-import subprocess
-import sys
-from connectM_game import ConnectMGame
+import unittest  # Import the unittest framework.
+import subprocess  # Import subprocess to run CLI commands.
+import sys  # Import sys for access to the Python interpreter.
+from connectM_game import ConnectMGame  # Import the ConnectMGame class for testing.
 
 class TestConnectMGame(unittest.TestCase):
 	'''
 	/**
 	 * Unit tests for the ConnectMGame class.
+	 *
+	 * These tests cover game logic including move validation, win and draw detection,
+	 * board evaluation, and the alpha-beta search algorithm.
 	 */
 	'''
 
 	def setUp(self):
 		'''
 		/**
-		 * Setup for the test cases. Initializes a ConnectMGame instance.
+		 * Set up a new game instance for each test.
+		 *
+		 * This method is run before every test method to ensure a fresh board.
+		 *
+		 * @return None
 		 */
 		'''
+		# Define a board size of 5 and winning condition of 4.
 		self.board_size = 5
 		self.connect_m = 4
+		# Create a new ConnectMGame instance with the human moving first.
 		self.game = ConnectMGame(self.board_size, self.connect_m, True)
 
 	def test_is_valid_move(self):
 		'''
 		/**
-		 * Tests that valid moves are correctly identified and invalid moves are rejected.
+		 * Test that valid moves are recognized and invalid moves are rejected.
 		 *
 		 * @return None
 		 */
 		'''
-		# Initially, all columns should be valid.
+		# On an empty board, every column should be valid.
 		for col in range(self.board_size):
 			self.assertTrue(self.game.isValidMove(col), f'Column {col} should be valid on an empty board.')
 
-		# Fill a column and test validity.
+		# Fill an entire column (e.g., column 2) and ensure it becomes invalid.
 		col_to_fill = 2
 		for _ in range(self.board_size):
 			move_made = self.game.makeMove(col_to_fill, self.game.human_symbol)
@@ -57,53 +65,57 @@ class TestConnectMGame(unittest.TestCase):
 	def test_make_move(self):
 		'''
 		/**
-		 * Tests that a move is correctly made on the board.
+		 * Test that a move places a disk in the correct position on the board.
 		 *
 		 * @return None
 		 */
 		'''
+		# Make a move in column 1.
 		col = 1
 		self.assertTrue(self.game.makeMove(col, self.game.human_symbol), 'Move should be successful.')
-		# The disk should be placed at the bottom of the column.
+		# The disk should appear in the bottom row of column 1.
 		self.assertEqual(self.game.board[self.board_size - 1][col], self.game.human_symbol,
 			'The disk should be placed at the bottom row.')
 
 	def test_horizontal_win(self):
 		'''
 		/**
-		 * Tests detection of a horizontal win condition.
+		 * Test detection of a horizontal win condition.
 		 *
 		 * @return None
 		 */
 		'''
-		# Manually create a horizontal win for human.
+		# Manually fill a horizontal segment on the bottom row for the human.
 		row = self.board_size - 1
 		for col in range(self.connect_m):
 			self.game.board[row][col] = self.game.human_symbol
+		# Check that the game recognizes the horizontal win.
 		self.assertTrue(self.game.checkWin(self.game.human_symbol), 'Horizontal win should be detected.')
 
 	def test_vertical_win(self):
 		'''
 		/**
-		 * Tests detection of a vertical win condition.
+		 * Test detection of a vertical win condition.
 		 *
 		 * @return None
 		 */
 		'''
+		# Manually fill a vertical segment in the first column for the human.
 		col = 0
 		for row in range(self.connect_m):
 			self.game.board[self.board_size - 1 - row][col] = self.game.human_symbol
+		# Verify that the vertical win is detected.
 		self.assertTrue(self.game.checkWin(self.game.human_symbol), 'Vertical win should be detected.')
 
 	def test_diagonal_win(self):
 		'''
 		/**
-		 * Tests detection of a diagonal win condition (top-left to bottom-right).
+		 * Test detection of a diagonal win (top-left to bottom-right).
 		 *
 		 * @return None
 		 */
 		'''
-		# Set up a diagonal win for human.
+		# Manually set up a diagonal win for the human.
 		for i in range(self.connect_m):
 			self.game.board[i][i] = self.game.human_symbol
 		self.assertTrue(self.game.checkWin(self.game.human_symbol), 'Diagonal win should be detected.')
@@ -111,11 +123,12 @@ class TestConnectMGame(unittest.TestCase):
 	def test_anti_diagonal_win(self):
 		'''
 		/**
-		 * Tests detection of an anti-diagonal win condition (top-right to bottom-left).
+		 * Test detection of an anti-diagonal win (top-right to bottom-left).
 		 *
 		 * @return None
 		 */
 		'''
+		# Manually set up an anti-diagonal win for the human.
 		for i in range(self.connect_m):
 			self.game.board[i][self.board_size - 1 - i] = self.game.human_symbol
 		self.assertTrue(self.game.checkWin(self.game.human_symbol), 'Anti-diagonal win should be detected.')
@@ -123,12 +136,12 @@ class TestConnectMGame(unittest.TestCase):
 	def test_draw(self):
 		'''
 		/**
-		 * Tests that a draw is detected when no valid moves are available.
+		 * Test that a full board with no wins is detected as a draw.
 		 *
 		 * @return None
 		 */
 		'''
-		# Fill the board without creating a win. Alternate moves between human and computer.
+		# Fill the board in an alternating pattern to avoid any wins.
 		symbol_cycle = [self.game.human_symbol, self.game.computer_symbol]
 		idx = 0
 		for row in range(self.board_size):
@@ -140,57 +153,60 @@ class TestConnectMGame(unittest.TestCase):
 	def test_alpha_beta_search(self):
 		'''
 		/**
-		 * Tests that the alpha-beta search returns a valid move.
+		 * Test that the alpha-beta search returns a valid move.
 		 *
 		 * @return None
 		 */
 		'''
-		# Set up a board with a few moves.
-		# Let human make a couple of moves.
+		# Simulate a scenario with a few moves already played.
 		self.game.makeMove(0, self.game.human_symbol)
 		self.game.makeMove(1, self.game.human_symbol)
-		# Let computer make a move.
 		self.game.makeMove(2, self.game.computer_symbol)
+		# Use the alpha-beta search to choose a move.
 		move = self.game.alphaBetaSearch(depth=3)
+		# Check that the move is one of the valid moves.
 		self.assertIn(move, self.game.getValidMoves(self.game.board), 'Alpha-beta search should return a valid move.')
 
 	def test_evaluate_board_state(self):
 		'''
 		/**
-		 * Tests that the evaluation function returns high positive for computer win and high negative for human win.
+		 * Test that the evaluation function scores winning conditions correctly.
 		 *
 		 * @return None
 		 */
 		'''
-		# Test for computer win.
+		# Simulate a winning board for the computer.
 		for col in range(self.connect_m):
 			self.game.board[self.board_size - 1][col] = self.game.computer_symbol
 		eval_score = self.game.evaluateBoardState(self.game.board)
+		# The evaluation should be highly positive for a computer win.
 		self.assertGreater(eval_score, 0, 'Evaluation should be positive for computer win.')
 
-		# Reset board and test for human win.
+		# Reset the game and simulate a winning board for the human.
 		self.game = ConnectMGame(self.board_size, self.connect_m, True)
 		for col in range(self.connect_m):
 			self.game.board[self.board_size - 1][col] = self.game.human_symbol
 		eval_score = self.game.evaluateBoardState(self.game.board)
+		# The evaluation should be highly negative for a human win.
 		self.assertLess(eval_score, 0, 'Evaluation should be negative for human win.')
 
 class TestMainCLI(unittest.TestCase):
 	'''
 	/**
-	 * Tests for the CLI functionality in the main module.
-	 * These tests use subprocess to simulate command-line invocations and
-	 * verify that error conditions are properly handled.
+	 * Unit tests for the CLI functionality in main.py.
+	 *
+	 * These tests simulate command-line invocations of main.py using subprocess
+	 * and check that invalid inputs produce proper error messages and exit codes.
 	 */
 	'''
 
 	def run_main(self, args):
 		'''
 		/**
-		 * Helper method to run main.py with specified arguments.
+		 * Helper method to run main.py with given command-line arguments.
 		 *
-		 * @param args: list of command-line arguments (excluding the python interpreter).
-		 * @return: CompletedProcess instance from subprocess.run.
+		 * @param args: List of arguments (excluding the interpreter).
+		 * @return: CompletedProcess object containing stdout, stderr, and return code.
 		 */
 		'''
 		return subprocess.run([sys.executable, 'main.py'] + args,
@@ -199,19 +215,21 @@ class TestMainCLI(unittest.TestCase):
 	def test_missing_arguments(self):
 		'''
 		/**
-		 * Tests that running main.py with missing arguments results in a usage error.
+		 * Test that running main.py without arguments produces a usage error.
 		 *
 		 * @return None
 		 */
 		'''
 		result = self.run_main([])
+		# Check that the process exits with a non-zero code.
 		self.assertNotEqual(result.returncode, 0, 'Missing arguments should cause a non-zero exit.')
+		# Check that the usage message is displayed.
 		self.assertIn('Usage:', result.stdout, 'Usage message should be printed on missing arguments.')
 
 	def test_invalid_board_size(self):
 		'''
 		/**
-		 * Tests that providing an invalid board size causes an error.
+		 * Test that an invalid board size produces an error.
 		 *
 		 * @return None
 		 */
@@ -224,7 +242,7 @@ class TestMainCLI(unittest.TestCase):
 	def test_invalid_connect_m(self):
 		'''
 		/**
-		 * Tests that providing an invalid connect M parameter causes an error.
+		 * Test that an invalid connect M parameter produces an error.
 		 *
 		 * @return None
 		 */
@@ -237,7 +255,7 @@ class TestMainCLI(unittest.TestCase):
 	def test_invalid_h_flag(self):
 		'''
 		/**
-		 * Tests that providing an invalid human/computer flag causes an error.
+		 * Test that an invalid human/computer flag produces an error.
 		 *
 		 * @return None
 		 */
@@ -247,5 +265,6 @@ class TestMainCLI(unittest.TestCase):
 		self.assertIn('Parameter H must be 0 or 1.', result.stdout,
 			'Error message for H flag should be printed.')
 
+# Run the test suite with increased verbosity if this script is executed directly.
 if __name__ == '__main__':
 	unittest.main(verbosity=2)
