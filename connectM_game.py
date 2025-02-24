@@ -1,43 +1,38 @@
 #!/usr/bin/env python3
 '''
-/**
- * Connect M Game Implementation.
- *
- * This module contains a detailed implementation of the Connect M game logic using
- * adversarial search with alpha-beta pruning.
- *
- * @author Jairun Diemert
- * @date 2025-02-24
- * @info CAP 4601 Project 1: Adversarial Search Spring 2025
- */
+Connect M Game Implementation.
+
+This module contains a detailed implementation of the Connect M game logic using
+adversarial search with alpha-beta pruning.
+
+@author Jairun Diemert
+@date 2025-02-24
+@info CAP 4601 Project 1: Adversarial Search Spring 2025
+
 '''
 
 import copy  # Import the copy module to make deep copies of the game board when needed.
 
 class ConnectMGame:
 	'''
-	/**
-	 * Class representing the Connect M game logic.
-	 *
-	 * This class holds the game board and all game logic such as move validation,
-	 * win/draw detection, and the adversarial search algorithm (alpha-beta pruning)
-	 * to choose the best move for the computer.
-	 *
-	 * @param board_size: The size (number of rows and columns) of the square game board.
-	 * @param connect_m: The number of disks that must be connected to win the game.
-	 * @param human_first: A flag (True/False) indicating if the human moves first.
-	 */
+	Class representing the Connect M game logic.
+
+	This class holds the game board and all game logic such as move validation,
+	win/draw detection, and the adversarial search algorithm (alpha-beta pruning)
+	to choose the best move for the computer.
+
+	@param board_size: The size (number of rows and columns) of the square game board.
+	@param connect_m: The number of disks that must be connected to win the game.
+	@param human_first: A flag (True/False) indicating if the human moves first.
 	'''
 
 	def __init__(self, board_size, connect_m, human_first):
 		'''
-		/**
-		 * Initializes the game with the board size, win condition, and first-move flag.
-		 *
-		 * @param board_size: Integer for the board dimensions (board_size x board_size).
-		 * @param connect_m: Integer for the number of connected disks needed to win.
-		 * @param human_first: Boolean indicating whether the human player starts.
-		 */
+		Initializes the game with the board size, win condition, and first-move flag.
+
+		@param board_size: Integer for the board dimensions (board_size x board_size).
+		@param connect_m: Integer for the number of connected disks needed to win.
+		@param human_first: Boolean indicating whether the human player starts.
 		'''
 		# Save the board size and the win condition for later use.
 		self.board_size = board_size
@@ -52,11 +47,9 @@ class ConnectMGame:
 
 	def displayBoard(self):
 		'''
-		/**
-		 * Displays the current game board in a simple text format.
-		 *
-		 * It prints a border, then each row of the board with cell values.
-		 */
+		Displays the current game board in a simple text format.
+
+		It prints a border, then each row of the board with cell values.
 		'''
 		# Print the top border of the board.
 		print('+' + '---+' * self.board_size)
@@ -75,25 +68,21 @@ class ConnectMGame:
 
 	def isValidMove(self, column):
 		'''
-		/**
-		 * Checks if a move can be made in the given column.
-		 *
-		 * @param column: Integer index of the column to check.
-		 * @return: True if the top cell in the column is empty, False if the column is full.
-		 */
+		Checks if a move can be made in the given column.
+
+		@param column: Integer index of the column to check.
+		@return: True if the top cell in the column is empty, False if the column is full.
 		'''
 		# The move is valid if the top cell of the column is empty (a space).
 		return self.board[0][column] == ' '
 
 	def makeMove(self, column, symbol):
 		'''
-		/**
-		 * Makes a move by dropping a disk into the specified column.
-		 *
-		 * @param column: Integer index of the column (0-indexed).
-		 * @param symbol: Character representing the player's disk (X or O).
-		 * @return: True if the disk was placed successfully, False if the column is full.
-		 */
+		Makes a move by dropping a disk into the specified column.
+
+		@param column: Integer index of the column (0-indexed).
+		@param symbol: Character representing the player's disk (X or O).
+		@return: True if the disk was placed successfully, False if the column is full.
 		'''
 		# First, check if the move is valid (i.e., the column is not full).
 		if not self.isValidMove(column):
@@ -112,25 +101,21 @@ class ConnectMGame:
 
 	def checkWin(self, symbol):
 		'''
-		/**
-		 * Checks if the player with the given symbol has won the game.
-		 *
-		 * @param symbol: Character representing the player's disk.
-		 * @return: True if the player has a winning set of connected disks, False otherwise.
-		 */
+		Checks if the player with the given symbol has won the game.
+
+		@param symbol: Character representing the player's disk.
+		@return: True if the player has a winning set of connected disks, False otherwise.
 		'''
 		# Call the helper function checkWinState on the current board.
 		return self.checkWinState(self.board, symbol)
 
 	def checkWinState(self, board, symbol):
 		'''
-		/**
-		 * Checks for a win condition on a given board for the specified symbol.
-		 *
-		 * @param board: 2D list representing the current board state.
-		 * @param symbol: Character representing the player's disk.
-		 * @return: True if a winning sequence is found, False otherwise.
-		 */
+		Checks for a win condition on a given board for the specified symbol.
+
+		@param board: 2D list representing the current board state.
+		@param symbol: Character representing the player's disk.
+		@return: True if a winning sequence is found, False otherwise.
 		'''
 		# Define the four directions to check for a winning sequence:
 		#   (0, 1)  -> →  (horizontal right)
@@ -163,13 +148,11 @@ class ConnectMGame:
 
 	def checkDraw(self):
 		'''
-		/**
-		 * Checks if the game is a draw.
-		 *
-		 * A draw is defined as a board where no valid moves remain (i.e., the top row is full).
-		 *
-		 * @return: True if the game is a draw, False otherwise.
-		 */
+		Checks if the game is a draw.
+
+		A draw is defined as a board where no valid moves remain (i.e., the top row is full).
+
+		@return: True if the game is a draw, False otherwise.
 		'''
 		# Loop through every column in the top row.
 		for col in range(self.board_size):
@@ -181,15 +164,13 @@ class ConnectMGame:
 
 	def evaluateBoardState(self, board):
 		'''
-		/**
-		 * Provides a heuristic evaluation of the board state.
-		 *
-		 * This function assigns a high positive value if the computer wins, a high negative
-		 * value if the human wins, and otherwise scores potential winning segments.
-		 *
-		 * @param board: 2D list representing the board state.
-		 * @return: Integer score representing the board's heuristic value.
-		 */
+		Provides a heuristic evaluation of the board state.
+
+		This function assigns a high positive value if the computer wins, a high negative
+		value if the human wins, and otherwise scores potential winning segments.
+
+		@param board: 2D list representing the board state.
+		@return: Integer score representing the board's heuristic value.
 		'''
 		# Check if the computer has a winning sequence.
 		# Example: For connect_m = 4, if a row has: O O O O => winning sequence.
@@ -281,38 +262,34 @@ class ConnectMGame:
 
 	def evaluateSegment(self, segment):
 		'''
-		/**
-		 * Evaluates a segment of cells for potential winning opportunities.
-		 *
-		 * If the segment contains both players' symbols, it has no potential.
-		 * Otherwise, segments with only one player's disks are scored exponentially
-		 * based on the count of disks.
-		 *
-		 * @param segment: List of cell values (characters).
-		 * @return: Integer score for the segment.
-		 */
+		Evaluates a segment of cells for potential winning opportunities.
+
+		If the segment contains both players' symbols, it has no potential.
+		Otherwise, segments with only one player's disks are scored exponentially
+		based on the count of disks.
+
+		@param segment: List of cell values (characters).
+		@return: Integer score for the segment.
 		'''
 		# If both players have disks in the segment, it is blocked.
 		if segment.count(self.human_symbol) > 0 and segment.count(self.computer_symbol) > 0:
 			return 0
 		# If only the computer's disks are present, return a positive score.
 		elif segment.count(self.computer_symbol) > 0:
-			return 10 ** segment.count(self.computer_symbol)
+			return 10* segment.count(self.computer_symbol)
 		# If only the human's disks are present, return a negative score.
 		elif segment.count(self.human_symbol) > 0:
-			return -(10 ** segment.count(self.human_symbol))
+			return -(10* segment.count(self.human_symbol))
 		else:
 			# If the segment is completely empty, it has no score.
 			return 0
 
 	def getValidMoves(self, board):
 		'''
-		/**
-		 * Generates a list of valid column indices where a move can be made.
-		 *
-		 * @param board: 2D list representing the board state.
-		 * @return: List of integer column indices that are valid moves.
-		 */
+		Generates a list of valid column indices where a move can be made.
+
+		@param board: 2D list representing the board state.
+		@return: List of integer column indices that are valid moves.
 		'''
 		valid_moves = []
 		# Loop over each column.
@@ -324,14 +301,12 @@ class ConnectMGame:
 
 	def applyMove(self, board, move, symbol):
 		'''
-		/**
-		 * Applies a move on a given board and returns a new board state.
-		 *
-		 * @param board: 2D list representing the current board.
-		 * @param move: Integer column index where the disk is to be dropped.
-		 * @param symbol: Character representing the player's disk.
-		 * @return: A new board state after applying the move.
-		 */
+		Applies a move on a given board and returns a new board state.
+
+		@param board: 2D list representing the current board.
+		@param move: Integer column index where the disk is to be dropped.
+		@param symbol: Character representing the player's disk.
+		@return: A new board state after applying the move.
 		'''
 		# Create a deep copy of the board to avoid modifying the original board.
 		new_board = copy.deepcopy(board)
@@ -349,14 +324,12 @@ class ConnectMGame:
 
 	def checkTerminal(self, board):
 		'''
-		/**
-		 * Determines if the board state is terminal.
-		 *
-		 * A terminal state is reached if either player has won or if there are no more valid moves.
-		 *
-		 * @param board: 2D list representing the board state.
-		 * @return: True if the state is terminal (win or draw), False otherwise.
-		 */
+		Determines if the board state is terminal.
+
+		A terminal state is reached if either player has won or if there are no more valid moves.
+
+		@param board: 2D list representing the board state.
+		@return: True if the state is terminal (win or draw), False otherwise.
 		'''
 		# Check if either player has achieved a win.
 		if self.checkWinState(board, self.computer_symbol) or self.checkWinState(board, self.human_symbol):
@@ -368,12 +341,10 @@ class ConnectMGame:
 
 	def alphaBetaSearch(self, depth):
 		'''
-		/**
-		 * Uses the alpha-beta pruning algorithm to choose the best move for the computer.
-		 *
-		 * @param depth: Integer specifying how many moves ahead to search.
-		 * @return: The column index of the best move.
-		 */
+		Uses the alpha-beta pruning algorithm to choose the best move for the computer.
+
+		@param depth: Integer specifying how many moves ahead to search.
+		@return: The column index of the best move.
 		'''
 		# Initialize best score to a very small number and best move to None.
 		best_score = -float('inf')
@@ -400,15 +371,13 @@ class ConnectMGame:
 
 	def maxValue(self, board, alpha, beta, depth):
 		'''
-		/**
-		 * The maximizer function in the alpha-beta pruning algorithm.
-		 *
-		 * @param board: 2D list representing the board state.
-		 * @param alpha: The best already explored option along the path to the root for the maximizer.
-		 * @param beta: The best already explored option along the path to the root for the minimizer.
-		 * @param depth: Integer representing the remaining search depth.
-		 * @return: The maximum heuristic score for the board state.
-		 */
+		The maximizer function in the alpha-beta pruning algorithm.
+
+		@param board: 2D list representing the board state.
+		@param alpha: The best already explored option along the path to the root for the maximizer.
+		@param beta: The best already explored option along the path to the root for the minimizer.
+		@param depth: Integer representing the remaining search depth.
+		@return: The maximum heuristic score for the board state.
 		'''
 		# If we've reached the desired depth or a terminal state, evaluate the board.
 		if depth == 0 or self.checkTerminal(board):
@@ -430,15 +399,13 @@ class ConnectMGame:
 
 	def minValue(self, board, alpha, beta, depth):
 		'''
-		/**
-		 * The minimizer function in the alpha-beta pruning algorithm.
-		 *
-		 * @param board: 2D list representing the board state.
-		 * @param alpha: The best already explored option for the maximizer.
-		 * @param beta: The best already explored option for the minimizer.
-		 * @param depth: Integer representing the remaining search depth.
-		 * @return: The minimum heuristic score for the board state.
-		 */
+		The minimizer function in the alpha-beta pruning algorithm.
+
+		@param board: 2D list representing the board state.
+		@param alpha: The best already explored option for the maximizer.
+		@param beta: The best already explored option for the minimizer.
+		@param depth: Integer representing the remaining search depth.
+		@return: The minimum heuristic score for the board state.
 		'''
 		# If the depth is zero or the state is terminal, evaluate the board.
 		if depth == 0 or self.checkTerminal(board):

@@ -1,15 +1,13 @@
 #!/usr/bin/env python3
 '''
-/**
- * Main CLI for Connect M Game.
- *
- * This module is the command-line interface for the Connect M game. It handles user input,
- * validates parameters, initializes the game, and runs the main game loop.
- *
- * @author Jairun Diemert
- * @date 2025-02-24
- * @info CAP 4601 Project 1: Adversarial Search Spring 2025
- */
+Main CLI for Connect M Game.
+
+This module is the command-line interface for the Connect M game. It handles user input,
+validates parameters, initializes the game, and runs the main game loop.
+
+@author Jairun Diemert
+@date 2025-02-24
+@info CAP 4601 Project 1: Adversarial Search Spring 2025
 '''
 
 import sys  # Import system module for accessing command-line arguments and exiting.
@@ -17,14 +15,12 @@ from connectM_game import ConnectMGame  # Import the game logic class.
 
 def main():
 	'''
-	/**
-	 * Main function to run the Connect M game.
-	 *
-	 * This function parses and validates command-line arguments, creates a game instance,
-	 * and starts the main game loop where the human and computer take turns.
-	 *
-	 * @return None
-	 */
+	Main function to run the Connect M game.
+
+	This function parses and validates command-line arguments, creates a game instance,
+	and starts the main game loop where the human and computer take turns.
+
+	@return None
 	'''
 	# Check if the number of command-line arguments is exactly 4:
 	# [script name, board_size (N), connect_m (M), human_first flag (H)]
