@@ -192,12 +192,126 @@ END FUNCTION
 
 ---
 
-## Configurable Parameters
+## Analysis of Computer vs. Computer Simulations
 
-The game accepts several parameters from the command line:
-- **Board Size (N):** Sets the dimensions of the game board.
-- **Connect M (M):** Sets the number of contiguous disks required to win.
-- **First Move Flag (H):** Determines which player moves first.
-- **Search Depth:** The depth for the alpha-beta search is currently statically set to 4. Adjusting this value affects the balance between the computer's strength and the computation time required for move selection.
+### **Hypothesis Driving the Analysis**
 
-Changes to these parameters allow for customization of the game difficulty and performance, offering flexibility for both casual play and more challenging scenarios.
+The core hypothesis behind this analysis is based on the behavior of **adversarial search algorithms**, specifically the impact of **search depth** when two AI agents play against each other using identical strategies. The central assumption is:
+
+> **If both AI players use the same search depth and identical heuristics within the alpha-beta pruning algorithm, the game should consistently result in a draw, regardless of the board configuration (size or the number of consecutive chips needed to win).**
+
+Since both AIs explore the same game tree with equivalent depth and logic, neither should gain an inherent advantage—each move is perfectly countered, leading to a balanced stalemate.
+
+---
+
+### **Why Test Depth and Board Configurations?**
+
+Exploring different search depths and board configurations provides valuable insights for game AI development and adversarial learning:
+
+1. **Identifying Depth-Based Advantages:**
+   A deeper search allows an AI to evaluate more future moves, leading to smarter plays and potentially earlier recognition of winning opportunities or defensive strategies. By varying the search depths between two AIs, we observe when one AI starts to consistently outperform the other.
+
+2. **Increasing Complexity with Board Size:**
+   Larger boards exponentially expand the search space, making it more difficult for shallow search depths to anticipate long-term consequences. Testing different board sizes (e.g., 3×3 to 6×6) reveals how complexity influences outcomes, particularly the likelihood of draws.
+
+3. **Depth vs. Board Size Trade-off:**
+   - On **smaller boards**, even slight depth advantages often result in wins because the limited search space makes it easier to foresee all possible moves.
+   - On **larger boards**, the advantage of a deeper search diminishes unless the depth scales with the increased complexity. Draws become more common as both AIs struggle to find winning strategies in vast search spaces.
+
+4. **Finding the Tipping Point:**
+   This analysis identifies at which depth advantage or board size complexity the balance shifts from a draw to a consistent win for the stronger AI. This helps optimize depth settings relative to board size for future AI development.
+
+---
+
+### **Test Design**
+
+To test the hypothesis systematically, the following parameters were used:
+
+1. **Board Sizes:**
+   Simulations were run on board sizes from **3×3** to **6×6**.
+
+2. **Winning Condition (Connect-M):**
+   The required number of consecutive chips to win was set equal to the board size (e.g., **3 chips** on a **3×3** board).
+
+3. **Search Depths:**
+   Both AI #1 and AI #2 were assigned depths from **1** to **4** across all possible depth combinations.
+
+4. **First-Move Advantage:**
+   Tests were run with **AI #1 moving first** in all scenarios to assess whether moving first, combined with deeper searches, could influence the outcome.
+
+5. **Outcome Metrics:**
+   Each configuration was run multiple times, recording results as:
+   - **AI #1 Wins**
+   - **AI #2 Wins**
+   - **Draws**
+
+---
+
+### **Significance of the Analysis**
+
+Understanding how search depth and board complexity affect game outcomes is essential for:
+
+- **AI Difficulty Tuning:**
+  Optimizing AI behavior for different difficulty levels by balancing search depth with computational efficiency.
+
+- **Adversarial Learning:**
+  Training stronger AI models by simulating evenly matched agents playing against themselves, fostering more sophisticated strategies.
+
+- **Resource Management:**
+  Identifying the minimum necessary depth for optimal play on larger boards without consuming excessive computational resources.
+
+In essence, this analysis explores the relationship between computational depth, board size, and AI performance, helping us understand where strategic dominance shifts and how to design more intelligent game AIs.
+
+#### **Analysis Outcome**
+
+![Corrected AI Depth Analysis Results](combined_results_corrected.png)
+
+---
+
+### **How to Interpret the Visual:**
+
+#### **Heatmaps (Top-Left to Bottom-Left)**
+Each heatmap corresponds to a board size:
+- **X-Axis:** AI #2 Depth
+- **Y-Axis:** AI #1 Depth
+- **Colors:**
+  - **Red:** AI #1 wins dominate (3-0)
+  - **Blue:** AI #2 wins dominate (3-0)
+  - **Gray:** Draws across all games (`D:3`)
+
+**Annotations within each cell:**
+- **`1:x`** → Number of wins for AI #1
+- **`2:x`** → Number of wins for AI #2
+- **`D:3`** → All three games ended in a draw
+
+##### Key Insights by Board:
+- **3×3 Board:**
+  - Depth advantages drastically shift outcomes.
+  - Draws happen when both AIs have equal depths (gray cells).
+- **4×4 Board:**
+  - Balanced outcomes with more draws at equal depths.
+  - Depth advantage leads to clear wins for the deeper searcher.
+- **5×5 Board:**
+  - Similar trends as 4×4 but with increased draws.
+  - Slight depth differences impact outcomes noticeably.
+- **6×6 Board:**
+  - Larger board complexity leads to more draws overall.
+  - Strong depth disparities still lead to dominant wins.
+
+---
+
+#### **Bar Chart (Bottom-Right)**
+- Displays the total number of draws for each board size.
+- **4×4** and **5×5** boards show the highest number of draws, reflecting balanced gameplay with equal depth configurations.
+- The **3×3** board results in fewer draws, with clear dominance from depth advantages.
+- The **6×6** board reflects increasing game complexity but still rewards deeper searches.
+
+---
+
+### **Conclusions**
+1. **Search Depth Matters:**
+   A deeper search consistently results in stronger AI performance, particularly on smaller boards.
+2. **Board Size Affects Balance:**
+   Larger boards tend to favor draws unless there’s a significant depth advantage.
+3. **Equal Depths Encourage Draws:**
+   When both AIs use the same search depth, outcomes are balanced, demonstrating fair gameplay.
