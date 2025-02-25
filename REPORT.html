@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>REPORT.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<h1 id="project-1-connect-m-computer-game">Project 1 Connect M Computer Game</h1>
+<p><strong>Team Members:</strong> Jairun Diemert
+<strong>Date:</strong> 2025-02-24</p>
+<hr>
+<h2 id="project-description">Project Description</h2>
+<p>This project implements a Connect M game where a human plays against a computer opponent. The game is solved using adversarial search with alpha-beta pruning to decide on the optimal move for the computer. The game’s objective is to place disks on a square board and connect a specified number of disks contiguously.</p>
+<hr>
+<h2 id="agent-model--agent-environment">Agent Model &amp; Agent Environment</h2>
+<p>The computer agent is modeled as a rational maximizer whose goal is to choose moves that maximize its chance of winning while minimizing the potential for the human opponent. It does so by evaluating board states using a heuristic function and exploring possible moves using the alpha-beta pruning algorithm. The agent adapts its strategy based on the current board configuration and uses a recursive search to forecast the outcomes of moves.</p>
+<p>The game environment is a two-dimensional grid (board) where players alternate turns to drop disks into columns. The environment is <code>fully observable</code> and <code>deterministic</code>. It enforces the game rules, including valid move detection, win condition checks (horizontal, vertical, and diagonal), and draw conditions. The design ensures that the agent’s decision-making process is closely tied to the feedback provided by the environment after each move.</p>
+<hr>
+<h2 id="data-structures">Data Structures</h2>
+<p>The primary data structure is a two-dimensional list (list of lists) representing the game board. Each cell in the board holds a single character: a space (' ') for an empty cell, 'X' for the human player's disk, and 'O' for the computer's disk. Additional state information such as board size, the win condition (connect_m), and turn information are stored as attributes of the game class. Move generation is efficiently handled by scanning the top row of each column to determine available moves.</p>
+<p>The data structures were chosen for their simplicity and effectiveness in representing grid-based games, ensuring that the game state can be easily copied, modified, and evaluated during recursive searches.</p>
+<hr>
+<h2 id="alpha-beta-pruning">Alpha-Beta Pruning</h2>
+<p>The alpha-beta pruning algorithm is implemented using two mutually recursive functions, <code>maxValue</code> and <code>minValue</code>, that traverse the game tree. The algorithm maintains two values, alpha and beta, which represent the best already-explored scores for the maximizer and minimizer respectively. By pruning branches where the current node's value exceeds these bounds, the algorithm reduces the number of nodes evaluated, thereby increasing efficiency. The depth of the search is controlled by a parameter (currently set to 4 in <code>main.py</code>), which determines how many moves ahead the computer looks. This number can be changed for different level of difficulty. Currently in testing I have only been able to manage a <code>DRAW</code> with 3,3,1 &amp; 4,4,1 and the depth set to 1.</p>
+<pre class="hljs"><code><div>FUNCTION AlphaBetaSearch(depth):
+    // Initialize best score for the maximizer (computer) to negative infinity.
+    best_score = -infinity
+    // Initialize best move as undefined.
+    best_move = None
+    // Set the initial alpha and beta values.
+    alpha = -infinity
+    beta = +infinity
+
+    // Loop through each valid move available from the current board state.
+    FOR each valid move in current_board DO:
+        // Apply the move to generate a new board state.
+        new_board = ApplyMove(current_board, move, COMPUTER_SYMBOL)
+        // Call the minimizer function on the new board state, reducing depth by 1.
+        score = MinValue(new_board, alpha, beta, depth - 1)
+        // If this move yields a better score, update best_score and best_move.
+        IF score &gt; best_score THEN:
+            best_score = score
+            best_move = move
+        END IF
+        // Update alpha with the best score so far.
+        alpha = MAX(alpha, best_score)
+    END FOR
+
+    // Return the move that gives the best evaluated score.
+    RETURN best_move
+END FUNCTION
+
+
+FUNCTION MaxValue(board, alpha, beta, depth):
+    // Terminal test: if maximum depth reached or board is in a terminal state.
+    IF depth == 0 OR IsTerminal(board) THEN:
+        RETURN EvaluateBoardState(board)
+    END IF
+
+    // Initialize value for maximizer to negative infinity.
+    value = -infinity
+
+    // For each valid move from the current board state.
+    FOR each valid move in board DO:
+        new_board = ApplyMove(board, move, COMPUTER_SYMBOL)
+        // Recursively evaluate the minimum value for the opponent's move.
+        value = MAX(value, MinValue(new_board, alpha, beta, depth - 1))
+        // Prune the branch if the value is already greater than or equal to beta.
+        IF value &gt;= beta THEN:
+            RETURN value
+        END IF
+        // Update alpha to the maximum value found so far.
+        alpha = MAX(alpha, value)
+    END FOR
+
+    RETURN value
+END FUNCTION
+
+
+FUNCTION MinValue(board, alpha, beta, depth):
+    // Terminal test: if maximum depth reached or board is in a terminal state.
+    IF depth == 0 OR IsTerminal(board) THEN:
+        RETURN EvaluateBoardState(board)
+    END IF
+
+    // Initialize value for minimizer to positive infinity.
+    value = +infinity
+
+    // For each valid move from the current board state.
+    FOR each valid move in board DO:
+        new_board = ApplyMove(board, move, HUMAN_SYMBOL)
+        // Recursively evaluate the maximum value for the computer's move.
+        value = MIN(value, MaxValue(new_board, alpha, beta, depth - 1))
+        // Prune the branch if the value is already less than or equal to alpha.
+        IF value &lt;= alpha THEN:
+            RETURN value
+        END IF
+        // Update beta to the minimum value found so far.
+        beta = MIN(beta, value)
+    END FOR
+
+    RETURN value
+END FUNCTION
+</div></code></pre>
+<hr>
+<h2 id="heuristic-evaluation-function">Heuristic Evaluation Function</h2>
+<p>The heuristic evaluation function assesses the desirability of a board state by checking for winning conditions and potential winning segments. It returns a high positive score if the computer wins and a high negative score if the human wins. For non-terminal states, it examines rows, columns, and diagonals, scoring segments based on the number of contiguous disks present. The scoring is exponential, using powers of 10 based on the count of disks in a segment, to emphasize moves that are closer to achieving a win. This function directly influences the decision-making process of the alpha-beta pruning algorithm. Current WIN returns 10^5 and LOSE returns -10^5.</p>
+<pre class="hljs"><code><div>FUNCTION EvaluateBoardState(board):
+    // Check terminal conditions first
+    IF CheckWinState(board, COMPUTER_SYMBOL) THEN
+        RETURN HIGH_POSITIVE_VALUE  // e.g., 1000000
+    END IF
+
+    IF CheckWinState(board, HUMAN_SYMBOL) THEN
+        RETURN HIGH_NEGATIVE_VALUE  // e.g., -1000000
+    END IF
+
+    // Initialize score to zero for non-terminal states
+    score = 0
+
+    // Evaluate horizontal segments
+    FOR each row in board DO
+        FOR col from 0 to (BOARD_SIZE - CONNECT_M) DO
+            segment = ExtractSegment(row, col, CONNECT_M)
+            score = score + EvaluateSegment(segment)
+        END FOR
+    END FOR
+
+    // Evaluate vertical segments
+    FOR col from 0 to BOARD_SIZE - 1 DO
+        FOR row from 0 to (BOARD_SIZE - CONNECT_M) DO
+            segment = ExtractVerticalSegment(board, col, row, CONNECT_M)
+            score = score + EvaluateSegment(segment)
+        END FOR
+    END FOR
+
+    // Evaluate diagonal segments (top-left to bottom-right)
+    FOR row from 0 to (BOARD_SIZE - CONNECT_M) DO
+        FOR col from 0 to (BOARD_SIZE - CONNECT_M) DO
+            segment = ExtractDiagonalSegment(board, row, col, CONNECT_M, direction=&quot;down-right&quot;)
+            score = score + EvaluateSegment(segment)
+        END FOR
+    END FOR
+
+    // Evaluate anti-diagonal segments (top-right to bottom-left)
+    FOR row from 0 to (BOARD_SIZE - CONNECT_M) DO
+        FOR col from CONNECT_M - 1 to (BOARD_SIZE - 1) DO
+            segment = ExtractDiagonalSegment(board, row, col, CONNECT_M, direction=&quot;down-left&quot;)
+            score = score + EvaluateSegment(segment)
+        END FOR
+    END FOR
+
+    RETURN score
+END FUNCTION
+
+
+FUNCTION EvaluateSegment(segment):
+    // If the segment contains disks from both players, it's blocked.
+    IF Count(segment, HUMAN_SYMBOL) &gt; 0 AND Count(segment, COMPUTER_SYMBOL) &gt; 0 THEN
+        RETURN 0
+    END IF
+
+    // If the segment contains only computer disks, score positively.
+    IF Count(segment, COMPUTER_SYMBOL) &gt; 0 THEN
+        RETURN 10^(Count(segment, COMPUTER_SYMBOL))
+    END IF
+
+    // If the segment contains only human disks, score negatively.
+    IF Count(segment, HUMAN_SYMBOL) &gt; 0 THEN
+        RETURN - (10^(Count(segment, HUMAN_SYMBOL)))
+    END IF
+
+    // If the segment is completely empty, it contributes no score.
+    RETURN 0
+END FUNCTION
+</div></code></pre>
+<hr>
+<h2 id="analysis-of-computer-vs-computer-simulations">Analysis of Computer vs. Computer Simulations</h2>
+<h3 id="hypothesis-driving-the-analysis"><strong>Hypothesis Driving the Analysis</strong></h3>
+<p>The core hypothesis behind this analysis is based on the behavior of <strong>adversarial search algorithms</strong>, specifically the impact of <strong>search depth</strong> when two AI agents play against each other using identical strategies. The central assumption is:</p>
+<blockquote>
+<p><strong>If both AI players use the same search depth and identical heuristics within the alpha-beta pruning algorithm, the game should consistently result in a draw, regardless of the board configuration (size or the number of consecutive chips needed to win).</strong></p>
+</blockquote>
+<p>Since both AIs explore the same game tree with equivalent depth and logic, neither should gain an inherent advantage—each move is perfectly countered, leading to a balanced stalemate.</p>
+<hr>
+<h3 id="why-test-depth-and-board-configurations"><strong>Why Test Depth and Board Configurations?</strong></h3>
+<p>Exploring different search depths and board configurations provides valuable insights for game AI development and adversarial learning:</p>
+<ol>
+<li>
+<p><strong>Identifying Depth-Based Advantages:</strong>
+A deeper search allows an AI to evaluate more future moves, leading to smarter plays and potentially earlier recognition of winning opportunities or defensive strategies. By varying the search depths between two AIs, we observe when one AI starts to consistently outperform the other.</p>
+</li>
+<li>
+<p><strong>Increasing Complexity with Board Size:</strong>
+Larger boards exponentially expand the search space, making it more difficult for shallow search depths to anticipate long-term consequences. Testing different board sizes (e.g., 3×3 to 6×6) reveals how complexity influences outcomes, particularly the likelihood of draws.</p>
+</li>
+<li>
+<p><strong>Depth vs. Board Size Trade-off:</strong></p>
+<ul>
+<li>On <strong>smaller boards</strong>, even slight depth advantages often result in wins because the limited search space makes it easier to foresee all possible moves.</li>
+<li>On <strong>larger boards</strong>, the advantage of a deeper search diminishes unless the depth scales with the increased complexity. Draws become more common as both AIs struggle to find winning strategies in vast search spaces.</li>
+</ul>
+</li>
+<li>
+<p><strong>Finding the Tipping Point:</strong>
+This analysis identifies at which depth advantage or board size complexity the balance shifts from a draw to a consistent win for the stronger AI. This helps optimize depth settings relative to board size for future AI development.</p>
+</li>
+</ol>
+<hr>
+<h3 id="test-design"><strong>Test Design</strong></h3>
+<p>To test the hypothesis systematically, the following parameters were used:</p>
+<ol>
+<li>
+<p><strong>Board Sizes:</strong>
+Simulations were run on board sizes from <strong>3×3</strong> to <strong>6×6</strong>.</p>
+</li>
+<li>
+<p><strong>Winning Condition (Connect-M):</strong>
+The required number of consecutive chips to win was set equal to the board size (e.g., <strong>3 chips</strong> on a <strong>3×3</strong> board).</p>
+</li>
+<li>
+<p><strong>Search Depths:</strong>
+Both AI #1 and AI #2 were assigned depths from <strong>1</strong> to <strong>4</strong> across all possible depth combinations.</p>
+</li>
+<li>
+<p><strong>First-Move Advantage:</strong>
+Tests were run with <strong>AI #1 moving first</strong> in all scenarios to assess whether moving first, combined with deeper searches, could influence the outcome.</p>
+</li>
+<li>
+<p><strong>Outcome Metrics:</strong>
+Each configuration was run multiple times, recording results as:</p>
+<ul>
+<li><strong>AI #1 Wins</strong></li>
+<li><strong>AI #2 Wins</strong></li>
+<li><strong>Draws</strong></li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="significance-of-the-analysis"><strong>Significance of the Analysis</strong></h3>
+<p>Understanding how search depth and board complexity affect game outcomes is essential for:</p>
+<ul>
+<li>
+<p><strong>AI Difficulty Tuning:</strong>
+Optimizing AI behavior for different difficulty levels by balancing search depth with computational efficiency.</p>
+</li>
+<li>
+<p><strong>Adversarial Learning:</strong>
+Training stronger AI models by simulating evenly matched agents playing against themselves, fostering more sophisticated strategies.</p>
+</li>
+<li>
+<p><strong>Resource Management:</strong>
+Identifying the minimum necessary depth for optimal play on larger boards without consuming excessive computational resources.</p>
+</li>
+</ul>
+<p>In essence, this analysis explores the relationship between computational depth, board size, and AI performance, helping us understand where strategic dominance shifts and how to design more intelligent game AIs.</p>
+<h4 id="analysis-outcome"><strong>Analysis Outcome</strong></h4>
+<p><img src="combined_results_corrected.png" alt="Corrected AI Depth Analysis Results"></p>
+<hr>
+<h3 id="how-to-interpret-the-visual"><strong>How to Interpret the Visual:</strong></h3>
+<h4 id="heatmaps-top-left-to-bottom-left"><strong>Heatmaps (Top-Left to Bottom-Left)</strong></h4>
+<p>Each heatmap corresponds to a board size:</p>
+<ul>
+<li><strong>X-Axis:</strong> AI #2 Depth</li>
+<li><strong>Y-Axis:</strong> AI #1 Depth</li>
+<li><strong>Colors:</strong>
+<ul>
+<li><strong>Red:</strong> AI #1 wins dominate (3-0)</li>
+<li><strong>Blue:</strong> AI #2 wins dominate (3-0)</li>
+<li><strong>Gray:</strong> Draws across all games (<code>D:3</code>)</li>
+</ul>
+</li>
+</ul>
+<p><strong>Annotations within each cell:</strong></p>
+<ul>
+<li><strong><code>1:x</code></strong> → Number of wins for AI #1</li>
+<li><strong><code>2:x</code></strong> → Number of wins for AI #2</li>
+<li><strong><code>D:3</code></strong> → All three games ended in a draw</li>
+</ul>
+<h5 id="key-insights-by-board">Key Insights by Board:</h5>
+<ul>
+<li><strong>3×3 Board:</strong>
+<ul>
+<li>Depth advantages drastically shift outcomes.</li>
+<li>Draws happen when both AIs have equal depths (gray cells).</li>
+</ul>
+</li>
+<li><strong>4×4 Board:</strong>
+<ul>
+<li>Balanced outcomes with more draws at equal depths.</li>
+<li>Depth advantage leads to clear wins for the deeper searcher.</li>
+</ul>
+</li>
+<li><strong>5×5 Board:</strong>
+<ul>
+<li>Similar trends as 4×4 but with increased draws.</li>
+<li>Slight depth differences impact outcomes noticeably.</li>
+</ul>
+</li>
+<li><strong>6×6 Board:</strong>
+<ul>
+<li>Larger board complexity leads to more draws overall.</li>
+<li>Strong depth disparities still lead to dominant wins.</li>
+</ul>
+</li>
+</ul>
+<hr>
+<h4 id="bar-chart-bottom-right"><strong>Bar Chart (Bottom-Right)</strong></h4>
+<ul>
+<li>Displays the total number of draws for each board size.</li>
+<li><strong>4×4</strong> and <strong>5×5</strong> boards show the highest number of draws, reflecting balanced gameplay with equal depth configurations.</li>
+<li>The <strong>3×3</strong> board results in fewer draws, with clear dominance from depth advantages.</li>
+<li>The <strong>6×6</strong> board reflects increasing game complexity but still rewards deeper searches.</li>
+</ul>
+<hr>
+<h3 id="conclusions"><strong>Conclusions</strong></h3>
+<ol>
+<li><strong>Search Depth Matters:</strong>
+A deeper search consistently results in stronger AI performance, particularly on smaller boards.</li>
+<li><strong>Board Size Affects Balance:</strong>
+Larger boards tend to favor draws unless there’s a significant depth advantage.</li>
+<li><strong>Equal Depths Encourage Draws:</strong>
+When both AIs use the same search depth, outcomes are balanced, demonstrating fair gameplay.</li>
+</ol>
+
+</body>
+</html>

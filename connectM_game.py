@@ -53,7 +53,7 @@ class ConnectMGame:
 		'''
 		# Print the top border of the board.
 		print('+' + '---+' * self.board_size)
-		# Loop through each row in the board.
+		# Iterate rows of the board.
 		for row in self.board:
 			# Start building the row string with a left border.
 			row_str = '|'
